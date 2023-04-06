@@ -1,13 +1,12 @@
 import { useState } from "react";
 
-function CreateArea() {
+function CreateArea(props) {
   const [entry, setEntry] = useState({
     title: "",
     content: "",
   });
 
   const callme = (event) => {
-    
     const { name, value } = event.target;
     setEntry((oldEntry) => {
       if (name === "title") {
@@ -22,23 +21,31 @@ function CreateArea() {
         };
       }
     });
-    
   };
 
   return (
     <div>
       <form>
-        <input name="title" placeholder="Title" onChange={callme} />
+        <input
+          name="title"
+          placeholder="Title"
+          onChange={callme}
+          value={entry.title}
+        />
         <textarea
           name="content"
           placeholder="Take a note..."
           rows="3"
           onChange={callme}
+          value={entry.content}
         />
         <button
-        type="submit"
+          type="submit"
           onClick={(event) => {
-            console.log(entry);
+            props.addNew(entry);
+            setEntry((oldEntry) => {
+              return { title: "", content: "" };
+            });
             event.preventDefault();
           }}
         >
